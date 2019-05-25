@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.rotomer.simplevm.messages";
+
+package rotomer.simplevm.messages;
+
+import "common.proto";
+
+message StopVmCommand {
+    string id = 1;
+    Region region = 2;
+    string vm_id = 3;
+}
+
+message VmStoppedEvent {
+    StopVmCommand command = 1;
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.rotomer.simplevm.messages";
+
+package rotomer.simplevm.messages;
+
+import "common.proto";
+
+message EditSpecCommand {
+    string id = 1;
+    string vm_id = 2;
+    VmSpec vm_spec = 3;
+}
+
+message SpecEditedEvent {
+    EditSpecCommand command = 1;
+}

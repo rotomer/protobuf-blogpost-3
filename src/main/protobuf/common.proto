@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.rotomer.simplevm.messages";
+
+package rotomer.simplevm.messages;
+
+enum Region {
+    UN_INITIALIZED_REGION = 0;
+    US = 1;
+    Europe = 2;
+    Asia = 3;
+}
+
+message VmSpec {
+    int32 cpu_cores = 1;
+    int32 gb_ram = 2;
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.rotomer.simplevm.messages";
+
+package rotomer.simplevm.messages;
+
+import "common.proto";
+
+message ProvisionVmCommand {
+    string id = 1;
+    Region region = 2;
+    VmSpec vm_spec = 3;
+}
+
+message VmProvisionedEvent {
+    ProvisionVmCommand command = 1;
+    string vm_id = 2;
+}

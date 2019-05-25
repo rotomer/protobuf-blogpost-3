@@ -1,0 +1,18 @@
+<configuration>
+    <!-- disabling the log configuration debug messages at startup: -->
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%-5level] [%d{"yyyy-MM-dd'T'HH:mm:ss,SSSXXX", UTC}] [%thread] [%logger{0}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <logger name="org.elasticmq.rest.sqs.TheSQSRestServerBuilder" level="off" additivity="false">
+        <appender-ref ref="GENERIC_ASYNC_FILE"/>
+    </logger>
+</configuration>
