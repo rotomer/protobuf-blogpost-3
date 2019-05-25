@@ -4,24 +4,19 @@ import com.google.inject.Inject;
 import com.rotomer.simplevm.hypervisor.Hypervisor;
 import com.rotomer.simplevm.messages.EditSpecCommand;
 import com.rotomer.simplevm.messages.SpecEditedEvent;
-import com.rotomer.simplevm.services.AbstractOperation;
-import com.rotomer.simplevm.services.ResponseSettings;
-import com.rotomer.simplevm.sqs.SqsSender;
+import com.rotomer.simplevm.services.Operation;
 
-public class EditSpecOperation extends AbstractOperation<EditSpecCommand, SpecEditedEvent> {
+public class EditSpecOperation implements Operation<EditSpecCommand, SpecEditedEvent> {
 
     private final Hypervisor _hypervisor;
 
     @Inject
-    public EditSpecOperation(final Hypervisor hypervisor,
-                             final SqsSender sqsSender,
-                             final ResponseSettings responseSettings) {
-        super(sqsSender, responseSettings);
+    public EditSpecOperation(final Hypervisor hypervisor) {
         _hypervisor = hypervisor;
     }
 
     @Override
-    protected SpecEditedEvent doProcessing(final EditSpecCommand command) {
+    public SpecEditedEvent processCommand(EditSpecCommand command) {
         // Doing some mock logic here for the sake of brevity:
 
         _hypervisor.setVmSpec(command.getVmId(), command.getVmSpec());

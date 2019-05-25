@@ -1,7 +1,6 @@
 package com.rotomer.simplevm.services.vm.di;
 
 import com.google.inject.AbstractModule;
-import com.rotomer.simplevm.services.ResponseSettings;
 import com.rotomer.simplevm.services.Service;
 import com.rotomer.simplevm.services.vm.VmService;
 import com.rotomer.simplevm.sqs.ListenerSettings;
@@ -12,14 +11,12 @@ public class VmServiceModule extends AbstractModule {
 
     private final SqsSettings _sqsSettings;
     private final ListenerSettings _listenerSettings;
-    private final ResponseSettings _responseSettings;
 
     public VmServiceModule(final Config config) {
         super();
 
         _sqsSettings = SqsSettings.fromConfig(config.getConfig("simplevm.vm-service.sqs"));
         _listenerSettings = ListenerSettings.fromConfig(config.getConfig("simplevm.vm-service.listener"));
-        _responseSettings = ResponseSettings.fromConfig(config.getConfig("simplevm.vm-service.response"));
     }
 
     @Override
@@ -28,6 +25,5 @@ public class VmServiceModule extends AbstractModule {
 
         bind(SqsSettings.class).toInstance(_sqsSettings);
         bind(ListenerSettings.class).toInstance(_listenerSettings);
-        bind(ResponseSettings.class).toInstance(_responseSettings);
     }
 }

@@ -32,11 +32,8 @@ public class VmServiceFunctionalTest {
                     "aws-region = " + AWS_REGION + "\n" +
                     "}\n" +
                     "listener {\n" +
-                    "wait-time-seconds = 5\n" +
+                    "wait-time-seconds = 20\n" +
                     "queue-url = \"" + REQUEST_QUEUE_URL + "\"\n" +
-                    "}\n" +
-                    "response {\n" +
-                    "queue-url = \"" + RESPONSE_QUEUE_URL + "\"\n" +
                     "}\n" +
                     "}\n" +
                     "}");
@@ -86,6 +83,7 @@ public class VmServiceFunctionalTest {
         final var envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(provisionVmCommand.getId())
+                .setResponseQueueUrl(RESPONSE_QUEUE_URL)
                 .build();
         final var encodedCommand = encodeMessageBase64(envelope);
 
@@ -114,6 +112,7 @@ public class VmServiceFunctionalTest {
         final var envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(editSpecCommand.getId())
+                .setResponseQueueUrl(RESPONSE_QUEUE_URL)
                 .build();
         final var encodedCommand = encodeMessageBase64(envelope);
 
@@ -139,6 +138,7 @@ public class VmServiceFunctionalTest {
         final var envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(stopVmCommand.getId())
+                .setResponseQueueUrl(RESPONSE_QUEUE_URL)
                 .build();
         final var encodedCommand = encodeMessageBase64(envelope);
 

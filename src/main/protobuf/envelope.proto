@@ -9,5 +9,6 @@ import "google/protobuf/any.proto";
 
 message VmCommandEnvelope {
     google.protobuf.Any inner_message = 1;
-    string vm_id = 3;
+    string vm_id = 2;
+    string response_queue_url = 3;
 }
