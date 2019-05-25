@@ -14,7 +14,6 @@ import com.typesafe.config.ConfigFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 
 import static com.rotomer.simplevm.services.vm.EmbeddedSqsTestFixture.*;
 import static com.rotomer.simplevm.utils.IdGenerator.nextId;
@@ -53,7 +52,7 @@ public class VmServiceFunctionalTest {
         _embeddedSqsTestFixture.start();
 
         final var sqsSettings = SqsSettings.fromConfig(_config.getConfig("simplevm.vm-service.sqs"));
-        _sqsSender = new SqsSender(sqsSettings, EnvironmentVariableCredentialsProvider.create());
+        _sqsSender = new SqsSender(sqsSettings);
         _sqsMessageReceiver = new SqsMessageReceiver(sqsSettings);
 
         _unitUnderTest = startUnitUnderTest();
@@ -65,7 +64,7 @@ public class VmServiceFunctionalTest {
     }
 
     private static SqsListener startUnitUnderTest() {
-        final Injector injector = Guice.createInjector(new VmServiceModule(_config, EnvironmentVariableCredentialsProvider.create()));
+        final Injector injector = Guice.createInjector(new VmServiceModule(_config));
         _unitUnderTest = injector.getInstance(SqsListener.class);
 
         newSingleThreadExecutor().submit(_unitUnderTest::start);

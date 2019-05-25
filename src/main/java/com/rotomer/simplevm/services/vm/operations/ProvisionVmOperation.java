@@ -7,7 +7,6 @@ import com.rotomer.simplevm.messages.ProvisionVmCommand;
 import com.rotomer.simplevm.messages.VmProvisionedEvent;
 import com.rotomer.simplevm.services.Operation;
 import com.rotomer.simplevm.services.ResponseSettings;
-import com.rotomer.simplevm.services.vm.model.Vm;
 import com.rotomer.simplevm.sqs.SqsSender;
 
 import static com.rotomer.simplevm.utils.ProtobufEncoderDecoder.encodeMessageBase64;

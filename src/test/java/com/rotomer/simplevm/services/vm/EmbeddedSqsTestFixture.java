@@ -1,10 +1,8 @@
 package com.rotomer.simplevm.services.vm;
 
 import com.rotomer.simplevm.sqs.ImmutableSqsSettings;
-import com.rotomer.simplevm.sqs.SqsSettings;
 import org.elasticmq.rest.sqs.SQSRestServer;
 import org.elasticmq.rest.sqs.SQSRestServerBuilder;
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.CreateQueueRequest;
@@ -33,7 +31,7 @@ public class EmbeddedSqsTestFixture implements AutoCloseable {
                 .awsRegion(AWS_REGION)
                 .sqsAwsServiceEndpoint(SQS_AWS_SERVICE_ENDPOINT)
                 .build();
-        _sqsClient = createSqsClient(sqsSettings, EnvironmentVariableCredentialsProvider.create());
+        _sqsClient = createSqsClient(sqsSettings);
     }
 
     private static String getEmbeddedQueueUrl(final String queueName) {

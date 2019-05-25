@@ -1,10 +1,8 @@
 package com.rotomer.simplevm.services.vm;
 
 import com.rotomer.simplevm.sqs.SqsSettings;
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
-import software.amazon.awssdk.services.sqs.model.Message;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageResponse;
 
@@ -19,7 +17,7 @@ class SqsMessageReceiver {
     private final SqsClient _sqsClient;
 
     SqsMessageReceiver(final SqsSettings sqsSettings) {
-        _sqsClient = createSqsClient(sqsSettings, EnvironmentVariableCredentialsProvider.create());
+        _sqsClient = createSqsClient(sqsSettings);
     }
 
     String receiveSingleMessage(@SuppressWarnings("SameParameterValue") final String queueUrl) {

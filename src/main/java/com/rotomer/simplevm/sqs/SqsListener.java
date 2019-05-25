@@ -3,7 +3,6 @@ package com.rotomer.simplevm.sqs;
 import com.google.inject.Inject;
 import com.rotomer.simplevm.services.Service;
 import io.vavr.collection.List;
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
 import software.amazon.awssdk.services.sqs.model.Message;
@@ -22,10 +21,9 @@ public class SqsListener implements AutoCloseable {
 
     @Inject
     public SqsListener(final SqsSettings sqsSettings,
-                       final AwsCredentialsProvider awsCredentialsProvider,
                        final ListenerSettings listenerSettings,
                        final Service service) {
-        _sqsClient = createSqsClient(sqsSettings, awsCredentialsProvider);
+        _sqsClient = createSqsClient(sqsSettings);
         _listenerSettings = listenerSettings;
         _service = service;
     }
