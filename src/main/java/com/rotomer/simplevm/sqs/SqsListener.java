@@ -45,7 +45,8 @@ public class SqsListener implements AutoCloseable {
     }
 
     private List<Message> receiveMessages() {
-        final ReceiveMessageResponse receiveMessageResponse = askForMessages();
+        final var receiveMessageResponse = askForMessages();
+
         return handleReceiveMessageResponse(receiveMessageResponse);
     }
 

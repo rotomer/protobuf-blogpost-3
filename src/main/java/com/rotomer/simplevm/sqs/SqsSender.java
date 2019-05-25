@@ -20,7 +20,7 @@ public class SqsSender {
 
     @SuppressWarnings("UnusedReturnValue")
     public String sendMessage(final String queueUrl, final String messageBody) {
-        final SendMessageResponse sendMessageResponse = _sqsClient.sendMessage(
+        final var sendMessageResponse = _sqsClient.sendMessage(
                 SendMessageRequest.builder()
                         .queueUrl(queueUrl)
                         .messageBody(messageBody)

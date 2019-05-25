@@ -52,7 +52,7 @@ public class VmServiceFunctionalTest {
         _embeddedSqsTestFixture = new EmbeddedSqsTestFixture();
         _embeddedSqsTestFixture.start();
 
-        final SqsSettings sqsSettings = SqsSettings.fromConfig(_config.getConfig("simplevm.vm-service.sqs"));
+        final var sqsSettings = SqsSettings.fromConfig(_config.getConfig("simplevm.vm-service.sqs"));
         _sqsSender = new SqsSender(sqsSettings, EnvironmentVariableCredentialsProvider.create());
         _sqsMessageReceiver = new SqsMessageReceiver(sqsSettings);
 
@@ -76,82 +76,82 @@ public class VmServiceFunctionalTest {
     @Test
     public void testProvisionVm() throws InvalidProtocolBufferException {
         // arrange:
-        final ProvisionVmCommand provisionVmCommand = ProvisionVmCommand.newBuilder()
+        final var provisionVmCommand = ProvisionVmCommand.newBuilder()
                 .setId(nextId())
                 .setRegion(Region.US)
                 .setVmSpec(VmSpec.newBuilder()
                         .setCpuCores(2)
                         .setGbRam(4))
                 .build();
-        final Any anyMessage = Any.pack(provisionVmCommand);
-        final VmCommandEnvelope envelope = VmCommandEnvelope.newBuilder()
+        final var anyMessage = Any.pack(provisionVmCommand);
+        final var envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(provisionVmCommand.getId())
                 .build();
-        final String encodedCommand = encodeMessageBase64(envelope);
+        final var encodedCommand = encodeMessageBase64(envelope);
 
         // act:
         _sqsSender.sendMessage(REQUEST_QUEUE_URL, encodedCommand);
-        final String encodedResponse = _sqsMessageReceiver.receiveSingleMessage(RESPONSE_QUEUE_URL);
+        final var encodedResponse = _sqsMessageReceiver.receiveSingleMessage(RESPONSE_QUEUE_URL);
 
         // assert:
-        final Any anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
+        final var anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
                 .build();
-        final VmProvisionedEvent actualResponse = anyResponseMessage.unpack(VmProvisionedEvent.class);
+        final var actualResponse = anyResponseMessage.unpack(VmProvisionedEvent.class);
         assertEquals(provisionVmCommand, actualResponse.getCommand());
     }
 
     @Test
     public void testEditSpec() throws InvalidProtocolBufferException {
         // arrange:
-        final EditSpecCommand editSpecCommand = EditSpecCommand.newBuilder()
+        final var editSpecCommand = EditSpecCommand.newBuilder()
                 .setId(nextId())
                 .setVmId(nextId())
                 .setVmSpec(VmSpec.newBuilder()
                         .setCpuCores(2)
                         .setGbRam(4))
                 .build();
-        final Any anyMessage = Any.pack(editSpecCommand);
-        final VmCommandEnvelope envelope = VmCommandEnvelope.newBuilder()
+        final var anyMessage = Any.pack(editSpecCommand);
+        final var envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(editSpecCommand.getId())
                 .build();
-        final String encodedCommand = encodeMessageBase64(envelope);
+        final var encodedCommand = encodeMessageBase64(envelope);
 
         // act:
         _sqsSender.sendMessage(REQUEST_QUEUE_URL, encodedCommand);
-        final String encodedResponse = _sqsMessageReceiver.receiveSingleMessage(RESPONSE_QUEUE_URL);
+        final var encodedResponse = _sqsMessageReceiver.receiveSingleMessage(RESPONSE_QUEUE_URL);
 
         // assert:
-        final Any anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
+        final var anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
                 .build();
-        final SpecEditedEvent actualResponse = anyResponseMessage.unpack(SpecEditedEvent.class);
+        final var actualResponse = anyResponseMessage.unpack(SpecEditedEvent.class);
         assertEquals(editSpecCommand, actualResponse.getCommand());
     }
 
     @Test
     public void testStopVm() throws InvalidProtocolBufferException {
         // arrange:
-        final StopVmCommand stopVmCommand = StopVmCommand.newBuilder()
+        final var stopVmCommand = StopVmCommand.newBuilder()
                 .setId(nextId())
                 .setVmId(nextId())
                 .build();
-        final Any anyMessage = Any.pack(stopVmCommand);
-        final VmCommandEnvelope envelope = VmCommandEnvelope.newBuilder()
+        final var anyMessage = Any.pack(stopVmCommand);
+        final var envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(stopVmCommand.getId())
                 .build();
-        final String encodedCommand = encodeMessageBase64(envelope);
+        final var encodedCommand = encodeMessageBase64(envelope);
 
         // act:
         // 5.
         _sqsSender.sendMessage(REQUEST_QUEUE_URL, encodedCommand);
-        final String encodedResponse = _sqsMessageReceiver.receiveSingleMessage(RESPONSE_QUEUE_URL);
+        final var encodedResponse = _sqsMessageReceiver.receiveSingleMessage(RESPONSE_QUEUE_URL);
 
         // assert:
-        final Any anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
+        final var anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
                 .build();
-        final VmStoppedEvent actualResponse = anyResponseMessage.unpack(VmStoppedEvent.class);
+        final var actualResponse = anyResponseMessage.unpack(VmStoppedEvent.class);
         assertEquals(stopVmCommand, actualResponse.getCommand());
     }
 }

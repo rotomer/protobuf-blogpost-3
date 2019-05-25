@@ -8,7 +8,7 @@ import static com.rotomer.simplevm.utils.ProtobufEncoderDecoder.encodeMessageBas
 public class ResponseWrapper {
 
     public static <T extends Message> String wrapResponseMessage(final T message) {
-        final Any wrappedEvent = Any.pack(message);
+        final var wrappedEvent = Any.pack(message);
         return encodeMessageBase64(wrappedEvent);
     }
 }

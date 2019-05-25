@@ -17,9 +17,9 @@ public abstract class AbstractOperation<C extends Message, E extends Message> im
 
     @Override
     public void processCommand(final C command) {
-        final E event = doProcessing(command);
+        final var event = doProcessing(command);
 
-        final String encodedEvent = wrapResponseMessage(event);
+        final var encodedEvent = wrapResponseMessage(event);
         _sqsSender.sendMessage(_responseSettings.queueUrl(), encodedEvent);
     }
 

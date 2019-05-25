@@ -30,10 +30,10 @@ class SqsMessageReceiver {
         // See the following link for reference - https://stackoverflow.com/a/31030493/1952591
 
         for (int i = 0; i < NUMBER_OF_RECEIVE_MESSAGE_ATTEMPTS; i++) {
-            final ReceiveMessageResponse receiveMessageResponse = receiveMessageHelper(queueUrl);
+            final var receiveMessageResponse = receiveMessageHelper(queueUrl);
 
             if (receiveMessageResponse.messages() != null && !receiveMessageResponse.messages().isEmpty()) {
-                final Message message = receiveMessageResponse.messages().get(0);
+                final var message = receiveMessageResponse.messages().get(0);
                 deleteMessage(queueUrl, message.receiptHandle());
 
                 return message.body();

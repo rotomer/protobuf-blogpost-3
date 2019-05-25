@@ -33,10 +33,10 @@ public class ProvisionVmOperation implements Operation<ProvisionVmCommand> {
         // implementations of StopVmOperation and EditSpecOperation.
         // This implementation has been made concrete in order to serve as a concrete example in the blog post.
 
-        final VmProvisionedEvent event = provisionVm(command);
+        final var event = provisionVm(command);
 
-        final Any wrappedEvent = Any.pack(event);
-        final String encodedEvent = encodeMessageBase64(wrappedEvent);
+        final var wrappedEvent = Any.pack(event);
+        final var encodedEvent = encodeMessageBase64(wrappedEvent);
 
         _sqsSender.sendMessage(_responseSettings.queueUrl(), encodedEvent);
     }
@@ -44,7 +44,7 @@ public class ProvisionVmOperation implements Operation<ProvisionVmCommand> {
     private VmProvisionedEvent provisionVm(final ProvisionVmCommand command) {
         // Doing some mock logic here for the sake of brevity:
 
-        final Vm vm = _hypervisor.provisionVm(command.getVmSpec(), command.getRegion());
+        final var vm = _hypervisor.provisionVm(command.getVmSpec(), command.getRegion());
 
         return VmProvisionedEvent.newBuilder()
                 .setCommand(command)

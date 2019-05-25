@@ -2,6 +2,7 @@
   <dictionary name="rotomer">
     <words>
       <w>guice</w>
+      <w>hypervisor</w>
       <w>protobuf</w>
       <w>protoc</w>
       <w>rotomer</w>

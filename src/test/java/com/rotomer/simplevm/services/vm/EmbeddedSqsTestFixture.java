@@ -29,7 +29,7 @@ public class EmbeddedSqsTestFixture implements AutoCloseable {
     private SQSRestServer _embeddedSqsServer;
 
     EmbeddedSqsTestFixture() {
-        final SqsSettings sqsSettings = ImmutableSqsSettings.builder()
+        final var sqsSettings = ImmutableSqsSettings.builder()
                 .awsRegion(AWS_REGION)
                 .sqsAwsServiceEndpoint(SQS_AWS_SERVICE_ENDPOINT)
                 .build();
@@ -60,7 +60,7 @@ public class EmbeddedSqsTestFixture implements AutoCloseable {
     }
 
     private SQSRestServer createAndStartEmbeddedSqsServer() {
-        final SQSRestServer embeddedSqsServer = SQSRestServerBuilder
+        final var embeddedSqsServer = SQSRestServerBuilder
                 .withPort(EMBEDDED_SQS_SERVER_PORT)
                 .withInterface("localhost")
                 .start();

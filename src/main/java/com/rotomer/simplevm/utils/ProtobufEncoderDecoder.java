@@ -6,12 +6,12 @@ import com.google.protobuf.Message;
 
 public class ProtobufEncoderDecoder {
     public static String encodeMessageBase64(final Message protobufMessage) {
-        final byte[] binarySer = protobufMessage.toByteArray();
+        final var binarySer = protobufMessage.toByteArray();
         return BaseEncoding.base64().encode(binarySer);
     }
 
     public static <B extends Message.Builder> B decodeMessageBase64(final String encodedMessage, final B messageBuilder) {
-        final byte[] binarySer = BaseEncoding.base64().decode(encodedMessage);
+        final var binarySer = BaseEncoding.base64().decode(encodedMessage);
 
         try {
             messageBuilder.mergeFrom(binarySer);
