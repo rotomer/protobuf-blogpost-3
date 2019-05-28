@@ -6,12 +6,12 @@ import com.google.protobuf.Message;
 import com.google.protobuf.util.JsonFormat;
 import com.rotomer.simplevm.messages.AnyJson;
 
-public class ProtobufAnyJsonUnpacker {
+public class AnyJsonUnpacker {
     private final JsonFormat.Parser jsonParser;
     private final MessageTypeLookup _messageTypeLookup;
 
     @Inject
-    public ProtobufAnyJsonUnpacker(final MessageTypeLookup messageTypeLookup) {
+    public AnyJsonUnpacker(final MessageTypeLookup messageTypeLookup) {
         _messageTypeLookup = messageTypeLookup;
         jsonParser = JsonFormat.parser();
     }

@@ -6,7 +6,7 @@ import com.google.protobuf.Message;
 import com.google.protobuf.util.JsonFormat;
 import com.rotomer.simplevm.messages.*;
 
-public class ProtobufAnyJsonPacker {
+public class AnyJsonPacker {
 
     // unless you host a schema repository like https://github.com/spotify/proto-registry then this prefix is just a
     // place holder:

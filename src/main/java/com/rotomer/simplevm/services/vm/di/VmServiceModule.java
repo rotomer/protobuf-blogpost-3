@@ -7,7 +7,7 @@ import com.rotomer.simplevm.services.vm.VmService;
 import com.rotomer.simplevm.sqs.ListenerSettings;
 import com.rotomer.simplevm.sqs.SqsSettings;
 import com.rotomer.simplevm.utils.MessageTypeLookup;
-import com.rotomer.simplevm.utils.ProtobufAnyJsonUnpacker;
+import com.rotomer.simplevm.utils.AnyJsonUnpacker;
 import com.typesafe.config.Config;
 
 public class VmServiceModule extends AbstractModule {
@@ -33,7 +33,7 @@ public class VmServiceModule extends AbstractModule {
                 .addMessageTypeMapping(VmStoppedEvent.getDescriptor(), VmStoppedEvent::newBuilder)
                 .build();
 
-        bind(ProtobufAnyJsonUnpacker.class).toInstance(new ProtobufAnyJsonUnpacker(messageTypeLookup));
+        bind(AnyJsonUnpacker.class).toInstance(new AnyJsonUnpacker(messageTypeLookup));
         bind(Service.class).to(VmService.class);
 
         bind(SqsSettings.class).toInstance(_sqsSettings);

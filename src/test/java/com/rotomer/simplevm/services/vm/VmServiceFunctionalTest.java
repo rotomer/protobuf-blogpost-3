@@ -9,9 +9,9 @@ import com.rotomer.simplevm.services.vm.di.VmServiceModule;
 import com.rotomer.simplevm.sqs.SqsListener;
 import com.rotomer.simplevm.sqs.SqsSender;
 import com.rotomer.simplevm.sqs.SqsSettings;
+import com.rotomer.simplevm.utils.AnyJsonPacker;
 import com.rotomer.simplevm.utils.MessageTypeLookup;
-import com.rotomer.simplevm.utils.ProtobufAnyJsonPacker;
-import com.rotomer.simplevm.utils.ProtobufAnyJsonUnpacker;
+import com.rotomer.simplevm.utils.AnyJsonUnpacker;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.junit.AfterClass;
@@ -40,7 +40,7 @@ public class VmServiceFunctionalTest {
                     "}");
 
     private static SqsSender _sqsSender;
-    private static ProtobufAnyJsonUnpacker _protobufAnyJsonUnpacker;
+    private static AnyJsonUnpacker _anyJsonUnpacker;
     private static SqsMessageReceiver _sqsMessageReceiver;
     private static EmbeddedSqsTestFixture _embeddedSqsTestFixture;
     private static SqsListener _unitUnderTest;
@@ -59,7 +59,7 @@ public class VmServiceFunctionalTest {
                 .addMessageTypeMapping(SpecEditedEvent.getDescriptor(), SpecEditedEvent::newBuilder)
                 .addMessageTypeMapping(VmStoppedEvent.getDescriptor(), VmStoppedEvent::newBuilder)
                 .build();
-        _protobufAnyJsonUnpacker = new ProtobufAnyJsonUnpacker(messageTypeLookup);
+        _anyJsonUnpacker = new AnyJsonUnpacker(messageTypeLookup);
 
         _unitUnderTest = startUnitUnderTest();
     }
@@ -88,7 +88,7 @@ public class VmServiceFunctionalTest {
                         .setCpuCores(2)
                         .setGbRam(4))
                 .build();
-        final var anyMessage = ProtobufAnyJsonPacker.pack(provisionVmCommand);
+        final var anyMessage = AnyJsonPacker.pack(provisionVmCommand);
         final var envelope = VmJsonEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(provisionVmCommand.getId())
@@ -105,7 +105,7 @@ public class VmServiceFunctionalTest {
         JsonFormat.parser().merge(jsonResponse, anyJsonBuilder);
         final var anyJsonResponseMessage = anyJsonBuilder.build();
 
-        final var protobufAnyJsonUnpacker = new ProtobufAnyJsonUnpacker(MessageTypeLookup.newBuilder()
+        final var protobufAnyJsonUnpacker = new AnyJsonUnpacker(MessageTypeLookup.newBuilder()
                 .addMessageTypeMapping(VmProvisionedEvent.getDescriptor(), VmProvisionedEvent::newBuilder)
                 .build());
         final var actualResponse = (VmProvisionedEvent) protobufAnyJsonUnpacker.unpack(anyJsonResponseMessage);
@@ -123,7 +123,7 @@ public class VmServiceFunctionalTest {
                         .setCpuCores(2)
                         .setGbRam(4))
                 .build();
-        final var anyMessage = ProtobufAnyJsonPacker.pack(editSpecCommand);
+        final var anyMessage = AnyJsonPacker.pack(editSpecCommand);
         final var envelope = VmJsonEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(editSpecCommand.getId())
@@ -140,7 +140,7 @@ public class VmServiceFunctionalTest {
         JsonFormat.parser().merge(jsonResponse, anyJsonBuilder);
         final var anyJsonResponseMessage = anyJsonBuilder.build();
 
-        final var actualResponse = (SpecEditedEvent) _protobufAnyJsonUnpacker.unpack(anyJsonResponseMessage);
+        final var actualResponse = (SpecEditedEvent) _anyJsonUnpacker.unpack(anyJsonResponseMessage);
         assertEquals(editSpecCommand, actualResponse.getCommand());
     }
 
@@ -151,7 +151,7 @@ public class VmServiceFunctionalTest {
                 .setId(nextId())
                 .setVmId(nextId())
                 .build();
-        final var anyMessage = ProtobufAnyJsonPacker.pack(stopVmCommand);
+        final var anyMessage = AnyJsonPacker.pack(stopVmCommand);
         final var envelope = VmJsonEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(stopVmCommand.getId())
@@ -168,7 +168,7 @@ public class VmServiceFunctionalTest {
         JsonFormat.parser().merge(jsonResponse, anyJsonBuilder);
         final var anyJsonResponseMessage = anyJsonBuilder.build();
 
-        final var actualResponse = (VmStoppedEvent) _protobufAnyJsonUnpacker.unpack(anyJsonResponseMessage);
+        final var actualResponse = (VmStoppedEvent) _anyJsonUnpacker.unpack(anyJsonResponseMessage);
         assertEquals(stopVmCommand, actualResponse.getCommand());
     }
 }

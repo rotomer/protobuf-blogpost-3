@@ -6,20 +6,20 @@ import com.google.protobuf.util.JsonFormat;
 import com.rotomer.simplevm.messages.VmJsonEnvelope;
 import com.rotomer.simplevm.services.Service;
 import com.rotomer.simplevm.sqs.SqsSender;
-import com.rotomer.simplevm.utils.ProtobufAnyJsonPacker;
-import com.rotomer.simplevm.utils.ProtobufAnyJsonUnpacker;
+import com.rotomer.simplevm.utils.AnyJsonPacker;
+import com.rotomer.simplevm.utils.AnyJsonUnpacker;
 
 
 public class VmService implements Service {
 
     private final JsonFormat.Parser _jsonParser;
     private final JsonFormat.Printer _jsonPrinter;
-    private final ProtobufAnyJsonUnpacker _anyJsonUnpacker;
+    private final AnyJsonUnpacker _anyJsonUnpacker;
     private final SqsSender _sqsSender;
     private final VmOperationLookup _vmOperationLookup;
 
     @Inject
-    VmService(final ProtobufAnyJsonUnpacker anyJsonUnpacker,
+    VmService(final AnyJsonUnpacker anyJsonUnpacker,
               final SqsSender sqsSender,
               final VmOperationLookup vmOperationLookup) {
         _jsonParser = JsonFormat.parser();
@@ -40,7 +40,7 @@ public class VmService implements Service {
         //noinspection unchecked
         var event = operation.processCommand(innerMessage);
 
-        final var wrappedEvent = ProtobufAnyJsonPacker.pack(event);
+        final var wrappedEvent = AnyJsonPacker.pack(event);
         final var jsonResponse = _jsonPrinter.print(wrappedEvent);
 
         _sqsSender.sendMessage(vmCommandEnvelope.getResponseQueueUrl(), jsonResponse);
