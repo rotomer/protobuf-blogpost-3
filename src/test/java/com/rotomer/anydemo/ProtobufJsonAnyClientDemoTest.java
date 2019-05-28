@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.util.UUID;
 
-public class ProtobufJsonAnyClientDemo {
+public class ProtobufJsonAnyClientDemoTest {
 
     @Test
     public void testProvisionVm() throws InvalidProtocolBufferException {

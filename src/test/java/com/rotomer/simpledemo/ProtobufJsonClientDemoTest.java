@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.util.UUID;
 
-public class ProtobufJsonClientDemo {
+public class ProtobufJsonClientDemoTest {
 
     @Test
     public void testProvisionVm() throws InvalidProtocolBufferException {
