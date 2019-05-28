@@ -25,7 +25,9 @@ public class MessageTypeLookup {
     }
 
     private static String getTypeUrlSuffix(final String fullProtobufTypeUrl) {
-        final var splits = fullProtobufTypeUrl.split("/"); // removing the type url's prefix. see - https://developers.google.com/protocol-buffers/docs/proto3#any
+        // removing the type url's prefix. see - https://developers.google.com/protocol-buffers/docs/proto3#any
+        final var splits = fullProtobufTypeUrl.split("/");
+
         return splits[splits.length - 1];
     }
 
@@ -36,7 +38,6 @@ public class MessageTypeLookup {
             _messageBuilderMap = HashMap.empty();
         }
 
-        @SuppressWarnings("UnusedReturnValue")
         public Builder addMessageTypeMapping(final Descriptors.Descriptor messageTypeDescriptor,
                                              final Supplier<Message.Builder> messageBuilderSupplier) {
             _messageBuilderMap = _messageBuilderMap.put(messageTypeDescriptor.getFullName(), messageBuilderSupplier);

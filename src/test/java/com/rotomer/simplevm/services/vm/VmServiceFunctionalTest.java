@@ -105,10 +105,7 @@ public class VmServiceFunctionalTest {
         JsonFormat.parser().merge(jsonResponse, anyJsonBuilder);
         final var anyJsonResponseMessage = anyJsonBuilder.build();
 
-        final var protobufAnyJsonUnpacker = new AnyJsonUnpacker(MessageTypeLookup.newBuilder()
-                .addMessageTypeMapping(VmProvisionedEvent.getDescriptor(), VmProvisionedEvent::newBuilder)
-                .build());
-        final var actualResponse = (VmProvisionedEvent) protobufAnyJsonUnpacker.unpack(anyJsonResponseMessage);
+        final var actualResponse = (VmProvisionedEvent) _anyJsonUnpacker.unpack(anyJsonResponseMessage);
 
         assertEquals(provisionVmCommand, actualResponse.getCommand());
     }

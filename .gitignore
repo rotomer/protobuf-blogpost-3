@@ -1,3 +1,22 @@
+# generated tareget files
+/**/target/classes/
+/**/target/generated-test-sources/
+/**/target/maven-archiver/
+/**/target/maven-status/
+/**/target/surefire-reports/
+/**/target/test-classes/
+/**/target/failsafe-reports/
+/**/target/generated-sources/annotations/
+/**/target/generated-sources/jooq/
+/**/target/generated-sources/protobuf/
+/target/pit-reports/
+/**/target/site/
+/**/target/jacoco.exec
+/**/logs/
+/**/target/surefire/
+/**/target/*.png
+/**/target/*.dot
+
 # Compiled class file
 *.class
 

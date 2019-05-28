@@ -8,8 +8,8 @@ import com.rotomer.simplevm.messages.*;
 
 public class AnyJsonPacker {
 
-    // unless you host a schema repository like https://github.com/spotify/proto-registry then this prefix is just a
-    // place holder:
+    // unless you host a schema repository like https://github.com/spotify/proto-registry then this
+    // prefix is just a place holder:
     private static final String COMPANY_TYPE_URL_PREFIX = "type.cloudshareapis.com";
     private static final JsonFormat.Printer _jsonPrinter = JsonFormat.printer();
 
