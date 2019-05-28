@@ -1,6 +1,7 @@
 package com.rotomer.simplevm.sqs;
 
 import com.google.inject.Inject;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.rotomer.simplevm.services.Service;
 import io.vavr.collection.List;
 import software.amazon.awssdk.services.sqs.SqsClient;
@@ -61,7 +62,12 @@ public class SqsListener implements AutoCloseable {
     }
 
     private void processMessage(final Message sqsMessage) {
-        _service.processMessage(sqsMessage.body());
+        try {
+            _service.processMessage(sqsMessage.body());
+        } catch (InvalidProtocolBufferException e) {
+            // < error handling ...>
+            e.printStackTrace();
+        }
         deleteMessage(sqsMessage);
     }
 

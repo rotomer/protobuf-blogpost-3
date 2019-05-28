@@ -1,41 +1,49 @@
 package com.rotomer.simplevm.services.vm;
 
 import com.google.inject.Inject;
-import com.rotomer.simplevm.messages.VmCommandEnvelope;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
+import com.rotomer.simplevm.messages.VmJsonEnvelope;
 import com.rotomer.simplevm.services.Service;
 import com.rotomer.simplevm.sqs.SqsSender;
+import com.rotomer.simplevm.utils.ProtobufAnyJsonPacker;
+import com.rotomer.simplevm.utils.ProtobufAnyJsonUnpacker;
 
-import static com.rotomer.simplevm.utils.ProtobufEncoderDecoder.decodeMessageBase64;
-import static com.rotomer.simplevm.utils.ResponseWrapper.wrapResponseMessage;
 
 public class VmService implements Service {
 
-    private final VmMessageUnpacker _vmMessageUnpacker;
+    private final JsonFormat.Parser _jsonParser;
+    private final JsonFormat.Printer _jsonPrinter;
+    private final ProtobufAnyJsonUnpacker _anyJsonUnpacker;
     private final SqsSender _sqsSender;
     private final VmOperationLookup _vmOperationLookup;
 
     @Inject
-    VmService(final VmMessageUnpacker vmMessageUnpacker,
+    VmService(final ProtobufAnyJsonUnpacker anyJsonUnpacker,
               final SqsSender sqsSender,
               final VmOperationLookup vmOperationLookup) {
-        _vmMessageUnpacker = vmMessageUnpacker;
+        _jsonParser = JsonFormat.parser();
+        _jsonPrinter = JsonFormat.printer();
+        _anyJsonUnpacker = anyJsonUnpacker;
         _sqsSender = sqsSender;
         _vmOperationLookup = vmOperationLookup;
     }
 
     @Override
-    public void processMessage(final String sqsMessageBody) {
-        final var vmCommandEnvelope = decodeMessageBase64(sqsMessageBody, VmCommandEnvelope.newBuilder())
-                .build();
+    public void processMessage(final String sqsMessageBody) throws InvalidProtocolBufferException {
+        final var envelopeBuilder = VmJsonEnvelope.newBuilder();
+        _jsonParser.merge(sqsMessageBody, envelopeBuilder);
+        final var vmCommandEnvelope = envelopeBuilder.build();
+        final var innerMessage = _anyJsonUnpacker.unpack(vmCommandEnvelope.getInnerMessage());
 
-        final var innerMessage = _vmMessageUnpacker.unpack(vmCommandEnvelope.getInnerMessage());
         final var operation = _vmOperationLookup.getOperationByMessage(innerMessage);
-
         //noinspection unchecked
         var event = operation.processCommand(innerMessage);
 
-        final var encodedEvent = wrapResponseMessage(event);
-        _sqsSender.sendMessage(vmCommandEnvelope.getResponseQueueUrl(), encodedEvent);
+        final var wrappedEvent = ProtobufAnyJsonPacker.pack(event);
+        final var jsonResponse = _jsonPrinter.print(wrappedEvent);
+
+        _sqsSender.sendMessage(vmCommandEnvelope.getResponseQueueUrl(), jsonResponse);
     }
 
 }

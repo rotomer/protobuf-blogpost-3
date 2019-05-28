@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.rotomer.simplevm.messages";
+
+package rotomer.simplevm.messages;
+
+import "any_json.proto";
+
+message VmJsonEnvelope {
+    AnyJson inner_message = 1;
+    string vm_id = 2;
+    string response_queue_url = 3;
+}

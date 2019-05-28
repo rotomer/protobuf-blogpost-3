@@ -17,6 +17,7 @@
 
     <protobuf.version>3.7.1</protobuf.version>
     <protoc-jar-maven-plugin.version>3.7.1</protoc-jar-maven-plugin.version>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
     <junit.version>4.12</junit.version>
     <immutables.version>2.7.5</immutables.version>
@@ -44,7 +45,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <release>11</release>
         </configuration>
@@ -93,6 +94,12 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java-util</artifactId>
       <version>${protobuf.version}</version>
     </dependency>
 

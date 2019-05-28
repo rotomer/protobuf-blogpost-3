@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.rotomer.simplevm.messages";
+
+package rotomer.simplevm.messages;
+
+// Json serialized "Any" type.
+// Use ProtobufAnyJsonPacker to pack a protobuf message into AnyJson.
+// Use ProtobufAnyJsonUnpacker to unpack the inner message of an AnyJson message into a protobuf message.
+// For reference implementation see:
+// - https://github.com/google/protobuf/blob/master/src/google/protobuf/any.proto
+// - https://developers.google.com/protocol-buffers/docs/proto3#any
+message AnyJson {
+    string type_url = 1;
+    string json_serialized_value = 2;
+}
