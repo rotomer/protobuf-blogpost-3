@@ -19,7 +19,7 @@
     <protoc-jar-maven-plugin.version>3.7.1</protoc-jar-maven-plugin.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <immutables.version>2.7.5</immutables.version>
     <vavr.version>0.10.0</vavr.version>
     <elasticmq.version>0.14.6</elasticmq.version>
